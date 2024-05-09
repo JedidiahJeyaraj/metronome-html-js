@@ -22,7 +22,7 @@ let tempoTextString = "Nice and Steady";
 function updateTempoDisplay() {
   tempoDisplay.textContent = bpm;
   tempoSlider.value = bpm;
-  metronome.timeInterval = 60000/bpm;
+  metronome.interval = 60000/bpm;
   if (bpm <= 40) {
     tempoTextString = "Super Slow";
   }

@@ -52,7 +52,7 @@ class PreciseTimer {
       this.callback = callbackfn;
       this.interval = interval;
       this.options = options;
-      console.log(this.callback);
+      console.log(this.interval)
   }
   start() {
       this.expected = Date.now() + this.interval;
@@ -61,14 +61,12 @@ class PreciseTimer {
           this.callback();
       }
       this.timeoutID = setTimeout(this.round.bind(this), this.interval);
-      console.log('Timer Started ' + this.timeoutID);
   }
   stop() {
       clearTimeout(this.timeoutID);
-      console.log('Timer Stoped ' + this.timeoutID);
   }
   round() {
-      console.log(this.callback);
+    console.log(this.interval)
       let drift = Date.now() - this.expected;
       if (drift > this.interval) {
           if (this.options.errorCallback) {
