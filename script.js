@@ -1,3 +1,5 @@
+import PreciseTimer from "./timer.js";
+
 const tempoDisplay = document.querySelector(".tempo");
 const tempoText = document.querySelector(".tempo-text");
 const decreaseTempoBtn = document.querySelector(".decrease-tempo");
@@ -8,12 +10,19 @@ const substractBeats = document.querySelector(".substract-beats");
 const addBeats = document.querySelector(".add-beats");
 const measureCount = document.querySelector(".measure-count");
 
-let bpm = 140;
+const click1 = new Audio("./sounds/click1.mp3");
+const click2 = new Audio("./sounds/click2.mp3");
+
+let bpm = 120;
 let beatsPerMeasure = 4;
+let count = 0;
+let isRunning = false;
+let tempoTextString = "Nice and Steady";
 
 function updateTempoDisplay() {
   tempoDisplay.textContent = bpm;
   tempoSlider.value = bpm;
+  metronome.timeInterval = 60000/bpm;
   if (bpm <= 40) {
     tempoTextString = "Super Slow";
   }
@@ -43,6 +52,7 @@ function updateTempoDisplay() {
 
 function updateBeatsPerMeasureDisplay() {
   measureCount.textContent = beatsPerMeasure;
+  count = 0;
 }
 
 decreaseTempoBtn.addEventListener("click", () => {
@@ -81,3 +91,36 @@ addBeats.addEventListener("click", () => {
   beatsPerMeasure++;
   updateBeatsPerMeasureDisplay();
 });
+
+startStopBtn.addEventListener("click", () => {
+  count = 0;
+  if (!isRunning) {
+    metronome.start();
+    isRunning = true;
+    startStopBtn.textContent = "STOP";
+  } else {
+    metronome.stop();
+    isRunning = false;
+    startStopBtn.textContent = "START";
+  }
+});
+
+function playClick() {
+  if (count === beatsPerMeasure) {
+    count = 0;
+  }
+  if (count === 0) {
+    click1.play();
+    click1.currentTime = 0;
+  } else {
+    click2.play();
+    click2.currentTime = 0;
+  }
+  count++;
+}
+
+const metronome = new PreciseTimer(playClick, 60000 / bpm, {
+  immediate: true,
+});
+
+// metronome.start()
